@@ -152,9 +152,9 @@ struct ImageResize: INode {
         image2->userData().set2("isImage", 1);
         image2->userData().set2("w", width);
         image2->userData().set2("h", height);
-        if(image->has_attr("alpha")){
-            image2->verts.add_attr<float>("alpha");
-        }
+        //if(image->has_attr("alpha")){
+            //image2->verts.add_attr<float>("alpha");
+        //}
 
         float scaleX = static_cast<float>(w) / width;
         float scaleY = static_cast<float>(h) / height;
@@ -165,7 +165,7 @@ struct ImageResize: INode {
             int srcX = static_cast<int>(x * scaleX);
             int srcY = static_cast<int>(y * scaleY);
             image2->verts[y * width + x] = image->verts[srcY * w + srcX];
-            image2->verts.attr<float>("alpha")[y * width + x] = image->verts.attr<float>("alpha")[srcY * w + srcX];
+            //image2->verts.attr<float>("alpha")[y * width + x] = image->verts.attr<float>("alpha")[srcY * w + srcX];
         }
         set_output("image", image2);
     }
@@ -1112,12 +1112,6 @@ struct ImageBlur : INode {
         int w = ud.get2<int>("w");
         int h = ud.get2<int>("h");
 
-        auto imagetmp = std::make_shared<PrimitiveObject>();
-        imagetmp->resize(w * h);
-        imagetmp->userData().set2("isImage", 1);
-        imagetmp->userData().set2("w", w);
-        imagetmp->userData().set2("h", h);
-
         cv::Mat imagecvin(h, w, CV_32FC3);
         cv::Mat imagecvout(h, w, CV_32FC3);
         for (auto a = 0; a < image->verts.size(); a++){
@@ -1311,11 +1305,12 @@ struct ImageEditContrast : INode {
     virtual void apply() override {
         auto image = get_input<PrimitiveObject>("image");
         float ContrastRatio = get_input2<float>("ContrastRatio");
+        float ContrastCenter = get_input2<float>("ContrastCenter");
         auto &ud = image->userData();
         int w = ud.get2<int>("w");
         int h = ud.get2<int>("h");
         for (auto i = 0; i < image->verts.size(); i++) {
-            image->verts[i] = image->verts[i] + (image->verts[i]-0.5) * (ContrastRatio-1);
+            image->verts[i] = image->verts[i] + (image->verts[i]-ContrastCenter) * (ContrastRatio-1);
         }
         set_output("image", image);
     }
@@ -1325,6 +1320,7 @@ ZENDEFNODE(ImageEditContrast, {
     {
         {"image"},
         {"float", "ContrastRatio", "1"},
+        {"float", "ContrastCenter", "0.5"},
     },
     {"image"},
     {},

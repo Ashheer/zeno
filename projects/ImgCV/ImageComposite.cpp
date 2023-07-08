@@ -3,6 +3,7 @@
 #include <zeno/types/PrimitiveObject.h>
 #include <zeno/types/UserData.h>
 #include <zeno/utils/scope_exit.h>
+#include <zeno/utils/parallel_reduce.h>
 #include <stdexcept>
 #include <cmath>
 #include <zeno/utils/log.h>
@@ -292,7 +293,7 @@ struct Composite: INode {
             if(maskmode2 == "R"){
                 Mask2->verts.add_attr<float>("alpha");
                 for(int i = 0;i < Mask2->size();i++){
-                    Mask2->verts.attr<float>("alpha")[i] = Mask2->verts[i][0];
+                    Mask2->verts.attr<float>("alpha")[i] = Mask2->verts[i][0];//WWWWWWWWWWWTTTTTTTTTTTFFFFFFFFFF
                 }
                 alpha2 = Mask2->verts.attr<float>("alpha");
             }
@@ -681,8 +682,8 @@ struct CompBlur : INode {
             blurredImage->verts.attr<float>("alpha") = image->verts.attr<float>("alpha");
         }
         std::vector<std::vector<float>>k = createKernel(kmid[1],kmid[0],kmid[2],ktop[1],kbot[1],ktop[0],ktop[2],kbot[0],kbot[2]);
-        int kernelSize = s * k.size();
-        int kernelRadius = kernelSize / 2;
+        //int kernelSize = s * k.size();
+        //int kernelRadius = kernelSize / 2;
 
 // 计算卷积核的中心坐标
         int anchorX = 3 / 2;
@@ -697,14 +698,15 @@ struct CompBlur : INode {
                     float sum2 = 0.0f;
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
+
                             int kernelX = x + j - anchorX;
                             int kernelY = y + i - anchorY;
 
                             if (kernelX >= 0 && kernelX < w && kernelY >= 0 && kernelY < h) {
 
-                                sum0 += image->verts[kernelY * h + kernelX][0] * k[i][j];
-                                sum1 += image->verts[kernelY * h + kernelX][1] * k[i][j];
-                                sum2 += image->verts[kernelY * h + kernelX][2] * k[i][j];
+                                sum0 += image->verts[kernelY * w + kernelX][0] * k[i][j];
+                                sum1 += image->verts[kernelY * w + kernelX][1] * k[i][j];
+                                sum2 += image->verts[kernelY * w + kernelX][2] * k[i][j];
                             }
                         }
                     }
@@ -893,18 +895,36 @@ struct CompImport : INode {
         int nx = ud.get2<int>("nx");
         int ny = ud.get2<int>("ny");
         auto attrName = get_input2<std::string>("attrName");
-
+        auto remapRange = get_input2<vec2f>("RemapRange");
+        auto remap = get_input2<bool>("Remap");
         auto image = std::make_shared<PrimitiveObject>();
         image->resize(nx * ny);
         image->userData().set2("isImage", 1);
         image->userData().set2("w", nx);
         image->userData().set2("h", ny);
+        //zeno::PrimitiveObject *prim = prim.get();
 
         if (prim->verts.attr_is<float>(attrName)) {
-            auto &attr = prim->attr<float>(attrName);
-            for (auto i = 0; i < nx * ny; i++) {
-                float v = attr[i];
-                image->verts[i] = {v, v, v};
+            auto &attr = prim->verts.attr<float>(attrName);
+            //calculate max and min attr value and remap it to 0-1
+            //minresult = prim_reduce<float>(prim.get(), attr);
+            float minresult = zeno::parallel_reduce_array<float>(attr.size(), attr[0], [&] (size_t i) -> float { return attr[i]; },
+            [&] (float i, float j) -> float { return zeno::min(i, j); });
+            float maxresult = zeno::parallel_reduce_array<float>(attr.size(), attr[0], [&] (size_t i) -> float { return attr[i]; },
+            [&] (float i, float j) -> float { return zeno::max(i, j); });
+            if (remap) {
+                for (auto i = 0; i < nx * ny; i++) {
+                    float v = attr[i];
+                    v = (v - minresult) / (maxresult - minresult);//remap to 0-1
+                    v = v * (remapRange[1] - remapRange[0]) + remapRange[0];
+                    image->verts[i] = {v, v, v};
+                }
+            }
+            else {
+                for (auto i = 0; i < nx * ny; i++) {
+                    float v = attr[i];
+                    image->verts[i] = {v, v, v};
+                }
             }
         }
         else if (prim->verts.attr_is<vec3f>(attrName)) {
@@ -921,6 +941,8 @@ ZENDEFNODE(CompImport, {
     {
         {"prim"},
         {"string", "attrName", ""},
+        {"bool", "Remap", "0"},
+        {"vec2f", "RemapRange", "0 1"},
     },
     {
         {"image"},

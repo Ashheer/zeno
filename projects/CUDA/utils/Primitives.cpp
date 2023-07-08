@@ -188,7 +188,6 @@ ZENDEFNODE(PrimitiveConnectedComponents, {
                                              {"zs_query"},
                                          });
 #else
-
 struct PrimitiveConnectedComponents : INode {
     virtual void apply() override {
         auto prim = get_input<PrimitiveObject>("prim");
