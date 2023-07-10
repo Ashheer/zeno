@@ -571,8 +571,257 @@ ZENDEFNODE(Composite, {
     { "comp" },
 });
 
+struct Blend: INode {
+    virtual void apply() override {
+        auto blend = get_input<PrimitiveObject>("Foreground");
+        auto base = get_input<PrimitiveObject>("Background");
+        auto mask = get_input<PrimitiveObject>("Mask"); //没有mask也得能用！ 弄一下
+        //判定一下 没有mask 默认就是1！
+        //需要zeno::loginfo/logerror 吗 还是没有足够的input也要可以执行。？
+        //没做几个输入的resize
+        auto compmode = get_input2<std::string>("Blending Mode");
+        auto opacity1 = get_input2<float>("Foreground Opacity");
+        auto opacity2 = get_input2<float>("Background Opacity");
 
-/*
+        auto &ud1 = blend->userData();
+        int w1 = ud1.get2<int>("w");
+        int h1 = ud1.get2<int>("h");
+
+//不需要这些 就地修改比较快！
+
+//todo： image1和image2大小不同的情况
+//        auto &ud2 = image2->userData();
+//        int w2 = ud2.get2<int>("w");
+//        int h2 = ud2.get2<int>("h");
+//                    for (int i = 0; i < h1; i++) {
+//                        for (int j = 0; j < w1; j++) {
+
+        if(compmode == "Normal") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = rgb1 * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1); //CLAMP 需要吗？？？
+                }
+            }
+        }
+        
+        else if(compmode == "Add") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = zeno::min(rgb1 + rgb2, vec3f(1.0f))*opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Subtract") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = zeno::max(rgb2 - rgb1, vec3f(0.0f))*opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Multiply") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = rgb1 * rgb2 * opacity + rgb1 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Max(Lighten)") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = zeno::max(rgb1, rgb2) * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Min(Darken)") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = zeno::min(rgb1, rgb2) * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "AddSub") {//可能有问题
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c;
+                    for (int k = 0; k < 3; k++) {
+                        if (rgb1[k] > 0.5) {
+                            c[k] = rgb1[k] + rgb2[k];
+                        } else {
+                            c[k] = rgb2[k] - rgb1[k];
+                        }
+                    }
+                    c = c * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Overlay") {//可能有问题
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c;
+                    for (int k = 0; k < 3; k++) {
+                        if (rgb2[k] < 0.5) {
+                            c[k] = 2 * rgb1[k] * rgb2[k];
+                        } else {
+                            c[k] = 1 - 2 * (1 - rgb1[k]) * (1 - rgb2[k]);
+                        }
+                    }
+                    c = c * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Screen") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = 1 - (1 - rgb2) * (1 - rgb1) * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "SoftLight") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c;
+                    for (int k = 0; k < 3; k++) {
+                        if (rgb2[k] < 0.5) {
+                            //c[k] = 2 * rgb1[k] * rgb2[k] + rgb1[k] * rgb1[k] * (1 - 2 * rgb2[k]);
+                            c[k] = 2 * rgb1[k] * rgb2[k] + rgb2[k] * rgb2[k] * (1 - 2 * rgb1[k]);
+                        } else {
+                            c[k] = 2 * rgb2[k] * (1 - rgb1[k]) + sqrt(rgb2[k]) * (2 * rgb1[k] - 1);
+                        }
+                    }
+                    c = c * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Difference") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = zeno::abs(rgb1 - rgb2) * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+    
+        else if(compmode == "Divide") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c;
+                    for (int k = 0; k < 3; k++) {
+                        if (rgb1[k] == 0) {
+                            c[k] = 1;
+                        } else {
+
+                            c[k] = rgb2[k] / rgb1[k];
+                        }
+                    }
+                    c = c * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+
+        else if(compmode == "Average") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f c = (rgb1 + rgb2) / 2 * opacity + rgb2 * (1 - opacity);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        }
+        
+
+        set_output("image", blend);
+    }
+};
+
+ZENDEFNODE(Blend, {
+    {
+        {"Foreground"},
+        {"Background"},
+        {"Mask"},
+        {"enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) AddSub Overlay Screen SoftLight Difference Divide Average", "Blending Mode", "Over"},
+        {"float", "Foreground Opacity", "1"},
+        {"float", "Background Opacity", "1"},
+    },
+    {
+        {"image"}
+    },
+    {},
+    { "comp" },
+});
+
+
+
 struct CompositeCV: INode {
     virtual void apply() override {
         auto image1 = get_input<PrimitiveObject>("Foreground");
@@ -639,7 +888,7 @@ ZENDEFNODE(CompositeCV, {
     {
         {"Foreground"},
         {"Background"},
-        {"enum Add Subtract Multiply Divide Diff", "mode", "Add"},
+        {"enum Add(Linear Dodge) Subtract Multiply Add Sub Diff", "mode", "Add"},
         {"float", "Alpha1", "1"},
         {"float", "Alpha2", "1"},
     },
@@ -649,7 +898,12 @@ ZENDEFNODE(CompositeCV, {
     {},
     { "comp" },
 });
-*/
+
+
+
+
+
+
 
 // 自定义卷积核
 std::vector<std::vector<float>> createKernel(float blurValue,
