@@ -1400,6 +1400,7 @@ struct ImageToNormalMap : INode {
         float gx = 0;
         float gy = 0;
         float gz = 1;
+
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 int idx = i * w + j;
@@ -1408,6 +1409,7 @@ struct ImageToNormalMap : INode {
                 }
             }
         }
+        
         for (int i = 1; i < h-1; i++) {
             for (int j = 1; j < w-1; j++) {
                 int idx = i * w + j;

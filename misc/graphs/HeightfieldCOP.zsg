@@ -6287,7 +6287,7 @@
                         "Terrain Resolution": {
                             "link": null,
                             "type": "int",
-                            "default-value": 5000,
+                            "default-value": 500,
                             "control": {
                                 "name": "Integer"
                             }
@@ -9981,8 +9981,8 @@
                         }
                     },
                     "uipos": [
-                        11908.0,
-                        1630.9464111328126
+                        13184.783203125,
+                        1970.3414306640626
                     ],
                     "options": [
                         "collapsed"
@@ -10047,8 +10047,8 @@
                         }
                     },
                     "uipos": [
-                        11049.5458984375,
-                        1575.1876220703126
+                        12321.8330078125,
+                        1973.3968505859376
                     ],
                     "options": [
                         "collapsed"
@@ -11599,8 +11599,8 @@
                         }
                     },
                     "uipos": [
-                        5432.8037109375,
-                        1007.0101928710938
+                        5500.89111328125,
+                        819.76953125
                     ],
                     "options": []
                 },
@@ -11626,7 +11626,7 @@
                         "ContrastCenter": {
                             "link": null,
                             "type": "float",
-                            "default-value": 0.04580150172114372,
+                            "default-value": 0.04500000178813934,
                             "control": {
                                 "name": "Float"
                             }
@@ -11650,8 +11650,8 @@
                         }
                     },
                     "uipos": [
-                        6209.67041015625,
-                        1303.51318359375
+                        6199.251272278043,
+                        829.7430007375281
                     ],
                     "options": []
                 },
@@ -11772,120 +11772,6 @@
                     ],
                     "options": []
                 },
-                "9c872c06-Composite": {
-                    "name": "Composite",
-                    "inputs": {
-                        "Foreground": {
-                            "link": "main:4c7159bd-CompImport:[node]/outputs/image",
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        },
-                        "Background": {
-                            "link": "main:483e7f8f-CompImport:[node]/outputs/image",
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        },
-                        "Mask1": {
-                            "link": "main:30f9bf60-ImageEditContrast:[node]/outputs/image",
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        },
-                        "Mask2": {
-                            "link": null,
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        },
-                        "Compmode": {
-                            "link": null,
-                            "type": "enum Over Under Atop Inside Outside Screen Add Subtract Multiply Divide Diff Min Max Average Xor Alpha !Alpha",
-                            "default-value": "Over",
-                            "control": {
-                                "name": "Enum",
-                                "items": [
-                                    "Over",
-                                    "Under",
-                                    "Atop",
-                                    "Inside",
-                                    "Outside",
-                                    "Screen",
-                                    "Add",
-                                    "Subtract",
-                                    "Multiply",
-                                    "Divide",
-                                    "Diff",
-                                    "Min",
-                                    "Max",
-                                    "Average",
-                                    "Xor",
-                                    "Alpha",
-                                    "!Alpha"
-                                ]
-                            }
-                        },
-                        "Mask1mode": {
-                            "link": null,
-                            "type": "enum R G B A",
-                            "default-value": "R",
-                            "control": {
-                                "name": "Enum",
-                                "items": [
-                                    "R",
-                                    "G",
-                                    "B",
-                                    "A"
-                                ]
-                            }
-                        },
-                        "Mask2mode": {
-                            "link": null,
-                            "type": "enum R G B A",
-                            "default-value": "R",
-                            "control": {
-                                "name": "Enum",
-                                "items": [
-                                    "R",
-                                    "G",
-                                    "B",
-                                    "A"
-                                ]
-                            }
-                        },
-                        "SRC": {
-                            "link": null,
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        }
-                    },
-                    "params": {},
-                    "outputs": {
-                        "image": {
-                            "type": ""
-                        },
-                        "DST": {
-                            "type": ""
-                        }
-                    },
-                    "uipos": [
-                        8854.091796875,
-                        2316.89111328125
-                    ],
-                    "options": []
-                },
                 "eb0a5807-Make2DGridPrimitive": {
                     "name": "Make2DGridPrimitive",
                     "inputs": {
@@ -12002,8 +11888,8 @@
                         }
                     },
                     "uipos": [
-                        5932.52880859375,
-                        2779.126953125
+                        11934.1884765625,
+                        2423.9453125
                     ],
                     "options": []
                 },
@@ -12058,8 +11944,8 @@
                         }
                     },
                     "uipos": [
-                        6733.013671875,
-                        2641.352783203125
+                        12734.6728515625,
+                        2286.171142578125
                     ],
                     "options": []
                 },
@@ -12085,7 +11971,7 @@
                         "Remap": {
                             "link": null,
                             "type": "bool",
-                            "default-value": false,
+                            "default-value": true,
                             "control": {
                                 "name": "Boolean"
                             }
@@ -12120,8 +12006,8 @@
                         }
                     },
                     "uipos": [
-                        7548.27978515625,
-                        2714.07373046875
+                        13548.10546875,
+                        2360.725830078125
                     ],
                     "options": []
                 },
@@ -12182,8 +12068,8 @@
                         }
                     },
                     "uipos": [
-                        11652.2607421875,
-                        -328.20989990234377
+                        13253.439453125,
+                        693.0523681640625
                     ],
                     "options": []
                 },
@@ -12263,8 +12149,8 @@
                         }
                     },
                     "uipos": [
-                        9567.6865234375,
-                        215.48219299316407
+                        11013.43359375,
+                        1247.71435546875
                     ],
                     "options": []
                 },
@@ -12360,8 +12246,8 @@
                         }
                     },
                     "uipos": [
-                        12429.42578125,
-                        1072.8853759765626
+                        10841.88671875,
+                        738.7763671875
                     ],
                     "options": []
                 },
@@ -12454,8 +12340,8 @@
                         }
                     },
                     "uipos": [
-                        9712.447265625,
-                        1023.7305908203125
+                        9691.7060546875,
+                        289.811279296875
                     ],
                     "options": []
                 },
@@ -12540,10 +12426,12 @@
                         }
                     },
                     "uipos": [
-                        8946.203125,
-                        -614.6219482421875
+                        10527.3203125,
+                        229.38526916503907
                     ],
-                    "options": []
+                    "options": [
+                        "collapsed"
+                    ]
                 },
                 "edf4cdef-PrimitiveColorByHeatmap": {
                     "name": "PrimitiveColorByHeatmap",
@@ -12565,7 +12453,7 @@
                             }
                         },
                         "heatmap": {
-                            "link": "main:fb926413-MakeHeatmap:[node]/outputs/heatmap",
+                            "link": "main:babe10e0-MakeHeatmap:[node]/outputs/heatmap",
                             "type": "",
                             "default-value": null,
                             "control": {
@@ -12615,8 +12503,8 @@
                         }
                     },
                     "uipos": [
-                        10268.0595703125,
-                        -626.0562133789063
+                        12387.546875,
+                        359.9889831542969
                     ],
                     "options": []
                 },
@@ -12657,94 +12545,8 @@
                         }
                     },
                     "uipos": [
-                        8736.474609375,
-                        -229.6339111328125
-                    ],
-                    "options": []
-                },
-                "28ffce1f-ShaderBlendMode": {
-                    "name": "ShaderBlendMode",
-                    "inputs": {
-                        "base": {
-                            "link": null,
-                            "type": "float",
-                            "default-value": 0.0,
-                            "control": {
-                                "name": "Float"
-                            }
-                        },
-                        "blend": {
-                            "link": null,
-                            "type": "float",
-                            "default-value": 0.0,
-                            "control": {
-                                "name": "Float"
-                            }
-                        },
-                        "opacity": {
-                            "link": null,
-                            "type": "float",
-                            "default-value": 0.0,
-                            "control": {
-                                "name": "Float"
-                            }
-                        },
-                        "mode": {
-                            "link": null,
-                            "type": "enum add average colorBurn colorDodge darken difference exclusion glow hardLight hardMix lighten linearBurn linearDodge linearLight multiply negation normal overlay phoenix pinLight reflect screen softLight subtract vividLight",
-                            "default-value": "normal",
-                            "control": {
-                                "name": "Enum",
-                                "items": [
-                                    "add",
-                                    "average",
-                                    "colorBurn",
-                                    "colorDodge",
-                                    "darken",
-                                    "difference",
-                                    "exclusion",
-                                    "glow",
-                                    "hardLight",
-                                    "hardMix",
-                                    "lighten",
-                                    "linearBurn",
-                                    "linearDodge",
-                                    "linearLight",
-                                    "multiply",
-                                    "negation",
-                                    "normal",
-                                    "overlay",
-                                    "phoenix",
-                                    "pinLight",
-                                    "reflect",
-                                    "screen",
-                                    "softLight",
-                                    "subtract",
-                                    "vividLight"
-                                ]
-                            }
-                        },
-                        "SRC": {
-                            "link": null,
-                            "type": "",
-                            "default-value": null,
-                            "control": {
-                                "name": ""
-                            }
-                        }
-                    },
-                    "params": {},
-                    "outputs": {
-                        "out": {
-                            "type": "shader"
-                        },
-                        "DST": {
-                            "type": ""
-                        }
-                    },
-                    "uipos": [
-                        9750.0478515625,
-                        2330.8974609375
+                        11393.1064453125,
+                        408.55670166015627
                     ],
                     "options": []
                 },
@@ -12891,7 +12693,7 @@
                         },
                         "Blending Mode": {
                             "link": null,
-                            "type": "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) AddSub Overlay Screen SoftLight Difference Divide Average",
+                            "type": "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) Overlay Screen SoftLight Difference Divide Average",
                             "default-value": "Multiply",
                             "control": {
                                 "name": "Enum",
@@ -12902,7 +12704,6 @@
                                     "Multiply",
                                     "Max(Lighten)",
                                     "Min(Darken)",
-                                    "AddSub",
                                     "Overlay",
                                     "Screen",
                                     "SoftLight",
@@ -12910,6 +12711,14 @@
                                     "Divide",
                                     "Average"
                                 ]
+                            }
+                        },
+                        "Mask Opacity": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": 1.0,
+                            "control": {
+                                "name": "Float"
                             }
                         },
                         "Foreground Opacity": {
@@ -12958,7 +12767,7 @@
                         "nx": {
                             "link": null,
                             "type": "int",
-                            "default-value": 5000,
+                            "default-value": 500,
                             "control": {
                                 "name": "Integer"
                             }
@@ -12966,7 +12775,7 @@
                         "ny": {
                             "link": null,
                             "type": "int",
-                            "default-value": 5000,
+                            "default-value": 500,
                             "control": {
                                 "name": "Integer"
                             }
@@ -13197,7 +13006,7 @@
                         "nx": {
                             "link": null,
                             "type": "int",
-                            "default-value": 5000,
+                            "default-value": 500,
                             "control": {
                                 "name": "Integer"
                             }
@@ -13205,7 +13014,7 @@
                         "ny": {
                             "link": null,
                             "type": "int",
-                            "default-value": 5000,
+                            "default-value": 500,
                             "control": {
                                 "name": "Integer"
                             }
@@ -13495,8 +13304,8 @@
                         }
                     },
                     "uipos": [
-                        -11637.554325097486,
-                        5120.054199218751
+                        -11637.5546875,
+                        5120.05419921875
                     ],
                     "options": []
                 },
@@ -13520,7 +13329,7 @@
                             }
                         },
                         "Mask": {
-                            "link": "main:b2d34744-CompImport:[node]/outputs/image",
+                            "link": null,
                             "type": "",
                             "default-value": null,
                             "control": {
@@ -13529,7 +13338,7 @@
                         },
                         "Blending Mode": {
                             "link": null,
-                            "type": "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) AddSub Overlay Screen SoftLight Difference Divide Average",
+                            "type": "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) Overlay Screen SoftLight Difference Divide Average",
                             "default-value": "Overlay",
                             "control": {
                                 "name": "Enum",
@@ -13540,7 +13349,6 @@
                                     "Multiply",
                                     "Max(Lighten)",
                                     "Min(Darken)",
-                                    "AddSub",
                                     "Overlay",
                                     "Screen",
                                     "SoftLight",
@@ -13548,6 +13356,14 @@
                                     "Divide",
                                     "Average"
                                 ]
+                            }
+                        },
+                        "Mask Opacity": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": 1.0,
+                            "control": {
+                                "name": "Float"
                             }
                         },
                         "Foreground Opacity": {
@@ -13585,12 +13401,10 @@
                         }
                     },
                     "uipos": [
-                        -10149.0732421875,
-                        5105.39794921875
+                        -10177.6279296875,
+                        5110.3896484375
                     ],
-                    "options": [
-                        "VIEW"
-                    ]
+                    "options": []
                 },
                 "a91d0b3e-ParticlesWrangle": {
                     "name": "ParticlesWrangle",
@@ -13828,6 +13642,496 @@
                     "uipos": [
                         -12574.482421875,
                         5817.03466796875
+                    ],
+                    "options": []
+                },
+                "43f80085-ReadImageFile": {
+                    "name": "ReadImageFile",
+                    "inputs": {
+                        "path": {
+                            "link": null,
+                            "type": "readpath",
+                            "default-value": "C:/Users/YingQ/Downloads/222nl.png",
+                            "control": {
+                                "name": "read path"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": "PrimitiveObject"
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        -10792.1708984375,
+                        4125.65771484375
+                    ],
+                    "options": []
+                },
+                "473a273d-ReadImageFile": {
+                    "name": "ReadImageFile",
+                    "inputs": {
+                        "path": {
+                            "link": null,
+                            "type": "readpath",
+                            "default-value": "C:/Users/YingQ/Downloads/111NL.png",
+                            "control": {
+                                "name": "read path"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": "PrimitiveObject"
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        -10880.4638671875,
+                        4529.837890625
+                    ],
+                    "options": []
+                },
+                "7dc12bce-WriteImageFile": {
+                    "name": "WriteImageFile",
+                    "inputs": {
+                        "image": {
+                            "link": "main:23bb91c5-Blend:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "path": {
+                            "link": null,
+                            "type": "writepath",
+                            "default-value": "C:/Users/YingQ/Downloads/test1",
+                            "control": {
+                                "name": "write path"
+                            }
+                        },
+                        "type": {
+                            "link": null,
+                            "type": "enum png jpg exr pfm",
+                            "default-value": "png",
+                            "control": {
+                                "name": "Enum",
+                                "items": [
+                                    "png",
+                                    "jpg",
+                                    "exr",
+                                    "pfm"
+                                ]
+                            }
+                        },
+                        "mask": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "gamma": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": true,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        -9135.1484375,
+                        4830.2060546875
+                    ],
+                    "options": []
+                },
+                "babe10e0-MakeHeatmap": {
+                    "name": "MakeHeatmap",
+                    "inputs": {
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {
+                        "_RAMPS": {
+                            "value": "6\n0.00324675 0.168627 0.0705882 0.027451\n0.146104 0.733333 0.32549 0.133333\n0.347403 0.258824 0.109804 0.054902\n0.663961 0.286275 0.14902 0.0509804\n0.819805 0.129412 0.0627451 0.0117647\n0.970779 0.0235294 0.0196078 0.0196078\n",
+                            "control": {
+                                "name": "Color"
+                            },
+                            "type": ""
+                        },
+                        "nres": {
+                            "value": 1024,
+                            "control": {
+                                "name": "Integer"
+                            },
+                            "type": "int"
+                        }
+                    },
+                    "outputs": {
+                        "heatmap": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        11624.7060546875,
+                        -107.39080810546875
+                    ],
+                    "options": []
+                },
+                "8b4c7211-ImageFlip": {
+                    "name": "ImageFlip",
+                    "inputs": {
+                        "image": {
+                            "link": "main:9d8e826c-Blend:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "flipX": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": false,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "flipY": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": true,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        15733.993660398826,
+                        1779.820519486042
+                    ],
+                    "options": []
+                },
+                "c4479a71-ImageRotate": {
+                    "name": "ImageRotate",
+                    "inputs": {
+                        "image": {
+                            "link": "main:8b4c7211-ImageFlip:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "rotate": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": -90.0,
+                            "control": {
+                                "name": "Float"
+                            }
+                        },
+                        "alpha": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": false,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        16481.572398675176,
+                        1855.4322056888446
+                    ],
+                    "options": [
+                        "VIEW"
+                    ]
+                },
+                "57ce5d2e-ImageFlip": {
+                    "name": "ImageFlip",
+                    "inputs": {
+                        "image": {
+                            "link": "main:30f9bf60-ImageEditContrast:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "flipX": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": false,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "flipY": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": true,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        7226.56689453125,
+                        1890.1859130859376
+                    ],
+                    "options": []
+                },
+                "fb2a1209-ImageRotate": {
+                    "name": "ImageRotate",
+                    "inputs": {
+                        "image": {
+                            "link": "main:57ce5d2e-ImageFlip:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "rotate": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": -90.0,
+                            "control": {
+                                "name": "Float"
+                            }
+                        },
+                        "alpha": {
+                            "link": null,
+                            "type": "bool",
+                            "default-value": false,
+                            "control": {
+                                "name": "Boolean"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        7918.547869440397,
+                        1854.7678442742648
+                    ],
+                    "options": [
+                        "VIEW"
+                    ]
+                },
+                "9d8e826c-Blend": {
+                    "name": "Blend",
+                    "inputs": {
+                        "Foreground": {
+                            "link": "main:4c7159bd-CompImport:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "Background": {
+                            "link": "main:483e7f8f-CompImport:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "Mask": {
+                            "link": "main:30f9bf60-ImageEditContrast:[node]/outputs/image",
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        },
+                        "Blending Mode": {
+                            "link": null,
+                            "type": "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) Overlay Screen SoftLight Difference Divide Average",
+                            "default-value": "Over",
+                            "control": {
+                                "name": "Enum",
+                                "items": [
+                                    "Normal",
+                                    "Add",
+                                    "Subtract",
+                                    "Multiply",
+                                    "Max(Lighten)",
+                                    "Min(Darken)",
+                                    "Overlay",
+                                    "Screen",
+                                    "SoftLight",
+                                    "Difference",
+                                    "Divide",
+                                    "Average"
+                                ]
+                            }
+                        },
+                        "Mask Opacity": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": 1.0,
+                            "control": {
+                                "name": "Float"
+                            }
+                        },
+                        "Foreground Opacity": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": 1.0,
+                            "control": {
+                                "name": "Float"
+                            }
+                        },
+                        "Background Opacity": {
+                            "link": null,
+                            "type": "float",
+                            "default-value": 1.0,
+                            "control": {
+                                "name": "Float"
+                            }
+                        },
+                        "SRC": {
+                            "link": null,
+                            "type": "",
+                            "default-value": null,
+                            "control": {
+                                "name": ""
+                            }
+                        }
+                    },
+                    "params": {},
+                    "outputs": {
+                        "image": {
+                            "type": ""
+                        },
+                        "DST": {
+                            "type": ""
+                        }
+                    },
+                    "uipos": [
+                        15039.987631325985,
+                        1546.022213217348
                     ],
                     "options": []
                 }
@@ -33135,7 +33439,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1866491313,
+                                    "uuid": 3447272303,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -33146,7 +33450,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 1588189245,
+                                    "uuid": 3383088736,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -33157,7 +33461,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1101798093,
+                                    "uuid": 2504600243,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -33168,7 +33472,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2475464471,
+                                    "uuid": 4187805339,
                                     "property": "normal"
                                 }
                             },
@@ -33182,7 +33486,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 462510532,
+                                    "uuid": 2789370130,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -33193,7 +33497,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1731960770,
+                                    "uuid": 1318881239,
                                     "property": "normal"
                                 }
                             }
@@ -33266,7 +33570,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1063525690,
+                                    "uuid": 370813073,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -33277,7 +33581,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 3940623113,
+                                    "uuid": 1021135111,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -33288,7 +33592,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2925403688,
+                                    "uuid": 2354573057,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -33299,7 +33603,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2764315284,
+                                    "uuid": 3818981652,
                                     "property": "normal"
                                 }
                             },
@@ -33313,7 +33617,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1843392738,
+                                    "uuid": 3826288987,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -33324,7 +33628,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 4014759207,
+                                    "uuid": 797200588,
                                     "property": "normal"
                                 }
                             }
@@ -33434,7 +33738,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 109910958,
+                                    "uuid": 276771084,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -33445,7 +33749,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 2489433754,
+                                    "uuid": 3285811121,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -33456,7 +33760,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 606007388,
+                                    "uuid": 3148009244,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -33467,7 +33771,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3653847629,
+                                    "uuid": 3680160368,
                                     "property": "normal"
                                 }
                             },
@@ -33481,7 +33785,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2523640911,
+                                    "uuid": 1600414813,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -33492,7 +33796,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2666300337,
+                                    "uuid": 1584936540,
                                     "property": "normal"
                                 }
                             }
@@ -35596,7 +35900,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1020129373,
+                                    "uuid": 1465544034,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -35607,7 +35911,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 343122647,
+                                    "uuid": 1734043828,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -35618,7 +35922,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3389474769,
+                                    "uuid": 1707885143,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -35629,7 +35933,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3822715513,
+                                    "uuid": 2580875271,
                                     "property": "normal"
                                 }
                             },
@@ -35643,7 +35947,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2255536450,
+                                    "uuid": 3269959864,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -35654,7 +35958,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1045468753,
+                                    "uuid": 593062317,
                                     "property": "normal"
                                 }
                             }
@@ -51595,14 +51899,14 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3876481277,
+                                    "uuid": 3092284635,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 3425360047,
+                                    "uuid": 2567357766,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -51610,7 +51914,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2537081302,
+                                    "uuid": 3600056515,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -51618,7 +51922,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1460357834,
+                                    "uuid": 4183565891,
                                     "property": "normal"
                                 }
                             },
@@ -51629,7 +51933,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2345589962,
+                                    "uuid": 1810104742,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -51637,7 +51941,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1259242915,
+                                    "uuid": 3088449200,
                                     "property": "normal"
                                 }
                             }
@@ -57070,7 +57374,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 398329982,
+                                    "uuid": 850002201,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -57081,7 +57385,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 3233566877,
+                                    "uuid": 2778977213,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -57092,7 +57396,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 901262739,
+                                    "uuid": 1092479286,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -57103,7 +57407,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2236024305,
+                                    "uuid": 4108307337,
                                     "property": "normal"
                                 }
                             },
@@ -57117,7 +57421,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2618263883,
+                                    "uuid": 297250564,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -57128,7 +57432,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1833665816,
+                                    "uuid": 3580294641,
                                     "property": "normal"
                                 }
                             }
@@ -57635,7 +57939,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1369002763,
+                                    "uuid": 820806760,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -57646,7 +57950,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 2106376693,
+                                    "uuid": 495532100,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -57657,7 +57961,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 509664492,
+                                    "uuid": 1505044686,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -57668,7 +57972,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2231575617,
+                                    "uuid": 817328657,
                                     "property": "normal"
                                 }
                             },
@@ -57682,7 +57986,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 94291055,
+                                    "uuid": 2658071434,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -57693,7 +57997,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 4270809897,
+                                    "uuid": 1183267727,
                                     "property": "normal"
                                 }
                             }
@@ -57804,7 +58108,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3603735600,
+                                    "uuid": 1847343030,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -57815,7 +58119,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 2848766457,
+                                    "uuid": 4109371738,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -57826,7 +58130,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2546368917,
+                                    "uuid": 2244083227,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -57837,7 +58141,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 516690692,
+                                    "uuid": 3828263403,
                                     "property": "normal"
                                 }
                             },
@@ -57851,7 +58155,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1643999955,
+                                    "uuid": 3848587690,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -57862,7 +58166,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3457586810,
+                                    "uuid": 365908824,
                                     "property": "normal"
                                 }
                             }
@@ -58746,7 +59050,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1976283723,
+                                    "uuid": 856512779,
                                     "property": "normal"
                                 },
                                 "zfxCode": {
@@ -58757,7 +59061,7 @@
                                     "control": {
                                         "name": "Multiline String"
                                     },
-                                    "uuid": 3650024532,
+                                    "uuid": 1997120936,
                                     "property": "normal"
                                 },
                                 "params": {
@@ -58768,7 +59072,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 894747963,
+                                    "uuid": 2658066273,
                                     "property": "normal"
                                 },
                                 "SRC": {
@@ -58779,7 +59083,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 3339053897,
+                                    "uuid": 3126134598,
                                     "property": "normal"
                                 }
                             },
@@ -58793,7 +59097,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 1341857725,
+                                    "uuid": 758936070,
                                     "property": "normal"
                                 },
                                 "DST": {
@@ -58804,7 +59108,7 @@
                                     "control": {
                                         "name": ""
                                     },
-                                    "uuid": 2912206889,
+                                    "uuid": 807238734,
                                     "property": "normal"
                                 }
                             }
@@ -72589,9 +72893,14 @@
                     ""
                 ],
                 [
-                    "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) AddSub Overlay Screen SoftLight Difference Divide Average",
+                    "enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) Overlay Screen SoftLight Difference Divide Average",
                     "Blending Mode",
                     "Over"
+                ],
+                [
+                    "float",
+                    "Mask Opacity",
+                    ""
                 ],
                 [
                     "float",
@@ -75007,56 +75316,6 @@
                     "enum R G B A",
                     "Mask2mode",
                     "R"
-                ],
-                [
-                    "",
-                    "SRC",
-                    ""
-                ]
-            ],
-            "params": [],
-            "outputs": [
-                [
-                    "",
-                    "image",
-                    ""
-                ],
-                [
-                    "",
-                    "DST",
-                    ""
-                ]
-            ],
-            "categories": [
-                "comp"
-            ]
-        },
-        "CompositeCV": {
-            "inputs": [
-                [
-                    "",
-                    "Foreground",
-                    ""
-                ],
-                [
-                    "",
-                    "Background",
-                    ""
-                ],
-                [
-                    "enum Add(Linear Dodge) Subtract Multiply Add Sub Diff",
-                    "mode",
-                    "Add"
-                ],
-                [
-                    "float",
-                    "Alpha1",
-                    ""
-                ],
-                [
-                    "float",
-                    "Alpha2",
-                    ""
                 ],
                 [
                     "",

@@ -575,8 +575,8 @@ struct Blend: INode {
     virtual void apply() override {
         auto blend = get_input<PrimitiveObject>("Foreground");
         auto base = get_input<PrimitiveObject>("Background");
-        auto mask = get_input<PrimitiveObject>("Mask"); //没有mask也得能用！ 弄一下
-        //判定一下 没有mask 默认就是1！
+        auto maskopacity = get_input2<float>("Mask Opacity");
+
         //需要zeno::loginfo/logerror 吗 还是没有足够的input也要可以执行。？
         //没做几个输入的resize
         auto compmode = get_input2<std::string>("Blending Mode");
@@ -586,6 +586,22 @@ struct Blend: INode {
         auto &ud1 = blend->userData();
         int w1 = ud1.get2<int>("w");
         int h1 = ud1.get2<int>("h");
+        auto mask = std::make_shared<PrimitiveObject>();
+        if(has_input("Mask")) {
+            mask = get_input<PrimitiveObject>("Mask");
+
+        }
+        else {
+            mask->verts.resize(w1*h1);
+            mask->userData().set2("isImage", 1);
+            mask->userData().set2("w", w1);
+            mask->userData().set2("h", h1);
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    mask->verts[i * w1 + j] = {maskopacity,maskopacity,maskopacity};
+                }
+            }
+        }
 
 //不需要这些 就地修改比较快！
 
@@ -596,15 +612,17 @@ struct Blend: INode {
 //                    for (int i = 0; i < h1; i++) {
 //                        for (int j = 0; j < w1; j++) {
 
+
+
         if(compmode == "Normal") {
 #pragma omp parallel for
             for (int i = 0; i < h1; i++) {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = rgb1 * opacity + rgb2 * (1 - opacity);
-                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1); //CLAMP 需要吗？？？
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
             }
         }
@@ -615,7 +633,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = zeno::min(rgb1 + rgb2, vec3f(1.0f))*opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -628,7 +646,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = zeno::max(rgb2 - rgb1, vec3f(0.0f))*opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -641,7 +659,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = rgb1 * rgb2 * opacity + rgb1 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -654,7 +672,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = zeno::max(rgb1, rgb2) * opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -667,20 +685,22 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = zeno::min(rgb1, rgb2) * opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
             }
         }
-
-        else if(compmode == "AddSub") {//可能有问题
+/*
+        else if(compmode == "AddSub") {
 #pragma omp parallel for
             for (int i = 0; i < h1; i++) {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    rgb1 = pow(rgb1, 1.0/2.2);
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    rgb2 = pow(rgb2, 1.0/2.2);
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c;
                     for (int k = 0; k < 3; k++) {
                         if (rgb1[k] > 0.5) {
@@ -689,13 +709,41 @@ struct Blend: INode {
                             c[k] = rgb2[k] - rgb1[k];
                         }
                     }
-                    c = c * opacity + rgb2 * (1 - opacity);
+                    c = pow(c, 2.2) * opacity + pow(rgb2, 2.2) * (1 - opacity);
+                    //c = c * opacity + rgb2 * (1 - opacity);
+                    //c = pow(c, 2.2);
+                    blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
+                }
+            }
+        
+*/
+        else if(compmode == "Overlay") {
+#pragma omp parallel for
+            for (int i = 0; i < h1; i++) {
+                for (int j = 0; j < w1; j++) {
+                    vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    rgb1 = pow(rgb1, 1.0/2.2);
+                    vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
+                    rgb2 = pow(rgb2, 1.0/2.2);
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
+                    vec3f c;
+                    for (int k = 0; k < 3; k++) {
+                        //if ( pow(rgb2[k] , 1.0/2.2) < 0.5) {
+                        if ( rgb2[k] < 0.5) {
+                            c[k] = 2 * rgb1[k] * rgb2[k];
+                        } else {
+                            c[k] = 1 - 2 * (1 - rgb1[k]) * (1 - rgb2[k]);
+                        }
+                    }
+                    c = pow(c, 2.2) * opacity + pow(rgb2, 2.2) * (1 - opacity);
+                    //c = c * opacity + rgb2 * (1 - opacity);
+                    //c = pow(c, 2.2);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
             }
         }
-
-        else if(compmode == "Overlay") {//可能有问题
+/* gamma
+        else if(compmode == "OverlayOrigin") {
 #pragma omp parallel for
             for (int i = 0; i < h1; i++) {
                 for (int j = 0; j < w1; j++) {
@@ -704,7 +752,7 @@ struct Blend: INode {
                     vec3f &opacity = mask->verts[i * w1 + j];
                     vec3f c;
                     for (int k = 0; k < 3; k++) {
-                        if (rgb2[k] < 0.5) {
+                        if ( rgb2[k] < 0.5) {
                             c[k] = 2 * rgb1[k] * rgb2[k];
                         } else {
                             c[k] = 1 - 2 * (1 - rgb1[k]) * (1 - rgb2[k]);
@@ -715,6 +763,7 @@ struct Blend: INode {
                 }
             }
         }
+*/
 
         else if(compmode == "Screen") {
 #pragma omp parallel for
@@ -722,7 +771,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = 1 - (1 - rgb2) * (1 - rgb1) * opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -734,18 +783,19 @@ struct Blend: INode {
             for (int i = 0; i < h1; i++) {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
+                    rgb1 = pow(rgb1, 1.0/2.2);
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    rgb2 = pow(rgb2, 1.0/2.2);
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c;
                     for (int k = 0; k < 3; k++) {
-                        if (rgb2[k] < 0.5) {
-                            //c[k] = 2 * rgb1[k] * rgb2[k] + rgb1[k] * rgb1[k] * (1 - 2 * rgb2[k]);
+                        if (rgb1[k] < 0.5) {
                             c[k] = 2 * rgb1[k] * rgb2[k] + rgb2[k] * rgb2[k] * (1 - 2 * rgb1[k]);
                         } else {
                             c[k] = 2 * rgb2[k] * (1 - rgb1[k]) + sqrt(rgb2[k]) * (2 * rgb1[k] - 1);
                         }
                     }
-                    c = c * opacity + rgb2 * (1 - opacity);
+                    c = pow(c, 2.2) * opacity + pow(rgb2, 2.2) * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
             }
@@ -757,7 +807,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = zeno::abs(rgb1 - rgb2) * opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -770,7 +820,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c;
                     for (int k = 0; k < 3; k++) {
                         if (rgb1[k] == 0) {
@@ -792,7 +842,7 @@ struct Blend: INode {
                 for (int j = 0; j < w1; j++) {
                     vec3f &rgb1 = blend->verts[i * w1 + j] * opacity1;
                     vec3f &rgb2 = base->verts[i * w1 + j] * opacity2;
-                    vec3f &opacity = mask->verts[i * w1 + j];
+                    vec3f &opacity = mask->verts[i * w1 + j] * maskopacity;
                     vec3f c = (rgb1 + rgb2) / 2 * opacity + rgb2 * (1 - opacity);
                     blend->verts[i * w1 + j] = zeno::clamp(c, 0, 1);
                 }
@@ -809,7 +859,8 @@ ZENDEFNODE(Blend, {
         {"Foreground"},
         {"Background"},
         {"Mask"},
-        {"enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) AddSub Overlay Screen SoftLight Difference Divide Average", "Blending Mode", "Over"},
+        {"enum Normal Add Subtract Multiply Max(Lighten) Min(Darken) Overlay Screen SoftLight Difference Divide Average", "Blending Mode", "Normal"},
+        {"float", "Mask Opacity", "1"},
         {"float", "Foreground Opacity", "1"},
         {"float", "Background Opacity", "1"},
     },
@@ -821,7 +872,7 @@ ZENDEFNODE(Blend, {
 });
 
 
-
+/*
 struct CompositeCV: INode {
     virtual void apply() override {
         auto image1 = get_input<PrimitiveObject>("Foreground");
@@ -899,7 +950,7 @@ ZENDEFNODE(CompositeCV, {
     { "comp" },
 });
 
-
+*/
 
 
 
