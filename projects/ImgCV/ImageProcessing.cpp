@@ -11,6 +11,7 @@
 #include <zeno/utils/log.h>
 #include <opencv2/opencv.hpp>
 
+
 using namespace cv;
 
 namespace zeno {
@@ -1760,15 +1761,19 @@ struct ImageErode: INode {
         int h = ud.get2<int>("h");
         cv::Mat imagecvin(h, w, CV_32FC3);
         cv::Mat imagecvout(h, w, CV_32FC3);
+//#pragma omp parallel for
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 vec3f rgb = image->verts[i * w + j];
                 imagecvin.at<cv::Vec3f>(i, j) = {rgb[0], rgb[1], rgb[2]};
             }
         }
+
         cv::Mat kernel = getStructuringElement(cv::MORPH_RECT, cv::Size(2 * kheight + 1, 2 * kwidth + 1),
                                                cv::Point(1, 1));
         cv::erode(imagecvin, imagecvout, kernel,cv::Point(-1, -1), strength);
+
+//#pragma omp parallel for
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 cv::Vec3f rgb = imagecvout.at<cv::Vec3f>(i, j);
@@ -2318,6 +2323,95 @@ ZENDEFNODE(ImageShape, {
     },
     {},
     {"deprecated"},
+});
+
+struct ImageLevels: INode {
+    void apply() override {
+        std::shared_ptr<PrimitiveObject> image = get_input<PrimitiveObject>("image");
+        auto inputLevels = get_input2<vec2f>("Input Levels") / 255.0f;
+        auto outputLevels = get_input2<vec2f>("Output Levels") / 255.0f;
+        auto gamma = get_input2<float>("gamma");//range  0.01 - 9.99
+        auto channel = get_input2<std::string>("channel");
+        UserData &ud = image->userData();
+        int w = ud.get2<int>("w");
+        int h = ud.get2<int>("h");
+        float inputRange = inputLevels[1] - inputLevels[0];
+        float outputRange = outputLevels[1] - outputLevels[0];
+        float inputMin = inputLevels[0];
+        float outputMin = outputLevels[0];
+        float gammaCorrection = 1.0f / gamma;
+
+        if (channel == "RGB") {
+#pragma omp parallel for
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                vec3f &v = image->verts[i * w + j];
+                v[0] = (v[0] < inputMin) ? inputMin : v[0];
+                v[1] = (v[1] < inputMin) ? inputMin : v[1];
+                v[2] = (v[2] < inputMin) ? inputMin : v[2];
+                v = (v - inputMin) / inputRange; 
+                v = pow(v, gammaCorrection);
+                v = v * outputRange + outputMin;
+            }
+        }
+        }
+
+        else if (channel == "R") {
+#pragma omp parallel for
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) { 
+                float &v = image->verts[i * w + j][0];
+                if (v < inputMin) v = inputMin;
+                v = (v - inputMin) / inputRange;
+                v = pow(v, gammaCorrection);
+                v = v * outputRange + outputMin;
+            }
+        }
+        }
+
+        else if (channel == "G") {
+#pragma omp parallel for
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) { 
+                float &v = image->verts[i * w + j][1];
+                if (v < inputMin) v = inputMin;
+                v = (v - inputMin) / inputRange;
+                v = pow(v, gammaCorrection);
+                v = v * outputRange + outputMin;
+            }
+        }
+        }
+        
+        else if (channel == "B") {
+#pragma omp parallel for
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) { 
+                float &v = image->verts[i * w + j][2];
+                if (v < inputMin) v = inputMin;
+                v = (v - inputMin) / inputRange;
+                v = pow(v, gammaCorrection);
+                v = v * outputRange + outputMin;
+            }
+        }
+        }
+
+        set_output("image", image);
+    }
+};
+ZENDEFNODE(ImageLevels, {
+    {
+        {"image"},
+        {"vec2f", "Input Levels", "0, 255"},
+        {"float", "gamma", "1"},
+        {"vec2f", "Output Levels", "0, 255"},
+        //{"bool", "auto level", "false"}, //auto level
+        {"enum RGB R G B", "channel", "RGB"},
+    },
+    {
+        {"image"},
+    },
+    {},
+    {"image"},
 });
 }
 }
